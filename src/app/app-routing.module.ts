@@ -11,6 +11,10 @@ const routes: Routes = [
       {path: '', component: HomePageComponent},
       {path: 'post/:id', component: PostPageComponent}
     ]
+  },
+  {
+    // lazy loading, #ClassName for webpack is needed
+    path: 'admin', loadChildren: () => import('./admin/admin.module').then(module => module.AdminModule)
   }
 ];
 
