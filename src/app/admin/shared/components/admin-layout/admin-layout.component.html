@@ -4,7 +4,7 @@
     <a routerLink="/">Angular Admin</a>
   </h1>
 
-  <ul>
+  <ul *ngIf="auth.isAuthenticated()">
     <li routerLinkActive="active">
       <a [routerLink]="['/admin', 'dashboard']">Главная</a>
     </li>
@@ -14,8 +14,6 @@
     <li>
       <a href="#" (click)="logout($event)">Log out</a>
     </li>
-
-
   </ul>
 </nav>
 
