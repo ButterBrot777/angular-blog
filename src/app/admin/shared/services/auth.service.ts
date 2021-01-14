@@ -14,12 +14,19 @@ export class AuthService {
 
   // is setter because logic is more complex than variable: change token, refresh token
   get token(): string {
-    return '';
+    const expDate = new Date( localStorage.getItem('fb-token-exp') );
+    if (new Date() > expDate) {
+      this.logout();
+      return null;
+    }
+    return localStorage.getItem('fb-token');
+
   }
 
   login(user: User): Observable<any> { // return rxJS stream
     // for now it unknown the url for authorization
     // prototype for coming method for creating user
+    user.returnSecureToken = true; // firebase request body payload requirement (template)
     return this.http.post(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${environment.apiKey}`, user)
       .pipe(
         tap(this.setToken)
@@ -27,6 +34,7 @@ export class AuthService {
   }
 
   logout(): void {
+    this.setToken(null);
   }
 
   isAuthenticated(): boolean {
@@ -35,8 +43,17 @@ export class AuthService {
 
   // change token or operate with token
   // private for secure token
-  private setToken(response: FbAuthResponse): void {
-    // todo: handle response
-    console.log('response from stream: ', response);
+  private setToken(response: FbAuthResponse | null): void {
+    if (response) {
+      // calculate date when token will be expired
+      // * 1000 to get milliseconds
+      const expDate = new Date(new Date().getTime() + +response.expiresIn * 1000);
+
+      // save tokens in local storage
+      localStorage.setItem('fb-token', response.idToken);
+      localStorage.setItem('fb-token-exp', expDate.toString());
+    } else {
+      localStorage.clear();
+    }
   }
 }
