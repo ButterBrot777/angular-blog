@@ -43,7 +43,8 @@ export class LoginPageComponent implements OnInit {
     };
 
     //
-    this.auth.login(user).subscribe(() => {
+    this.auth.login(user).subscribe((response) => {
+      console.log('response from login-page: ', response);
       this.form.reset();
       this.router.navigate(['/admin', 'dashboard']);
     });
