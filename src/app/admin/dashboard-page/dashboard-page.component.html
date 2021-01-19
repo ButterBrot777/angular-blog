@@ -1,6 +1,6 @@
 <ng-container *ngIf="posts.length; else loading">
 <!--  search input-->
-  <div class="form-control">
+  <div class="form-control" [(ngModel)]="searchStr">
 	<input type="text" placeholder="Find post">
   </div>
 
@@ -16,7 +16,7 @@
 	</thead>
 
 	<tbody>
-	<tr *ngFor="let post of posts; let idx = index">
+	<tr *ngFor="let post of posts | searchPosts:searchStr; let idx = index">
 	  <td>{{ idx + 1 }}</td>
 	  <td>{{ post.author }}</td>
 	  <td>{{ post.title }}</td>

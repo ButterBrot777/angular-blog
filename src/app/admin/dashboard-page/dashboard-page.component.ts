@@ -13,6 +13,8 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
   // create postSubscription variable to unsubscribe and to avoid memory leaks
   pSub: Subscription;
 
+  searchStr = '';
+
   constructor(
     private postsService: PostsService,
   ) { }
