@@ -39,6 +39,26 @@ export class PostsService {
         }));
   }
 
+  getById(id: string): Observable<Post> {
+    return this.http.get<Post>(`${environment.fbDbUrl}/posts/${id}.json`)
+      .pipe(
+        map((post: Post) => {
+
+          // spread post to set id and date
+          return  {
+            ...post,
+            id,
+            date: new Date(post.date)
+          };
+        })
+      );
+  }
+
+  // update post and change them on the server
+  update(post: Post): Observable<Post> {
+    return this.http.patch<Post>(`${environment.fbDbUrl}/posts/${post.id}.json`, post);
+  }
+
   // delete post by his id
   remove(id: string): Observable<void> {
     return this.http.delete<void>(`${environment.fbDbUrl}/posts/${id}.json`);
