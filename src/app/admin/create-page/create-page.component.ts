@@ -1,16 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Post } from '../../shared/interfaces';
 import { PostsService } from '../../shared/posts.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-create-page',
   templateUrl: './create-page.component.html',
-  styleUrls: ['./create-page.component.scss']
+  styleUrls: ['./create-page.component.scss'],
 })
-export class CreatePageComponent implements OnInit {
+export class CreatePageComponent implements OnInit, OnDestroy {
 
   form: FormGroup;
+
+  // create deleteSubscription variable to unsubscribe and to avoid memory leaks
+  cSub: Subscription;
 
   constructor(
     private postsService: PostsService,
@@ -36,9 +40,15 @@ export class CreatePageComponent implements OnInit {
       date: new Date(),
     };
 
-    this.postsService.create(post).subscribe(() => {
+    this.cSub = this.postsService.create(post).subscribe(() => {
       this.form.reset();
     });
     console.log('post: ', post);
+  }
+
+  ngOnDestroy() {
+    if (this.cSub) {
+      this.cSub.unsubscribe();
+    }
   }
 }
