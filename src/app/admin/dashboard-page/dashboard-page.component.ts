@@ -12,6 +12,8 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
   posts: Post[] = [];
   // create postSubscription variable to unsubscribe and to avoid memory leaks
   pSub: Subscription;
+  // create deleteSubscription variable to unsubscribe and to avoid memory leaks
+  dSub: Subscription;
 
   searchStr = '';
 
@@ -25,14 +27,22 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
     })
   }
 
+  remove(id: string) {
+    this.dSub = this.postsService.remove(id).subscribe(() => {
+      this.posts = this.posts.filter(post => {
+        return post.id !== id
+      })
+    });
+  }
+
   // avoid multiple subscription
   ngOnDestroy(): void {
     if (this.pSub) {
       this.pSub.unsubscribe();
     }
-  }
 
-  remove(id: string) {
-    
+    if (this.dSub) {
+      this.dSub.unsubscribe();
+    }
   }
 }
