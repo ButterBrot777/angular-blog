@@ -1,6 +1,6 @@
 <ng-container *ngIf="posts.length; else loading">
 <!--  search input-->
-  <div class="form-control" [(ngModel)]="searchStr">
+  <div class="form-control" [(ngModel)]="searchStr" ngDefaultControl>
 	<input type="text" placeholder="Find post">
   </div>
 
