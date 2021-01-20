@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Post } from '../../shared/interfaces';
 import { PostsService } from '../../shared/posts.service';
 import { Subscription } from 'rxjs';
+import { AlertService } from '../shared/services/alert.service';
 
 @Component({
   selector: 'app-create-page',
@@ -18,6 +19,7 @@ export class CreatePageComponent implements OnInit, OnDestroy {
 
   constructor(
     private postsService: PostsService,
+    private alertService: AlertService,
   ) { }
 
   ngOnInit(): void {
@@ -42,6 +44,8 @@ export class CreatePageComponent implements OnInit, OnDestroy {
 
     this.cSub = this.postsService.create(post).subscribe(() => {
       this.form.reset();
+      // show message 'Post has been created'
+      this.alertService.success('Post has been created');
     });
     console.log('post: ', post);
   }
