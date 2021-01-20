@@ -31,7 +31,7 @@ export class EditPageComponent implements OnInit, OnDestroy {
     this.route.params
       .pipe(
         switchMap((params: Params) => {
-      return this.postsService.getById(params.id)
+      return this.postsService.getById(params['id'])
     })
       ).subscribe((post: Post) => {
         this.post = post;
@@ -52,8 +52,8 @@ export class EditPageComponent implements OnInit, OnDestroy {
 
     this.uSub = this.postsService.update({
       ...this.post,
-      text: this.post.text,
-      title: this.post.title,
+      text: this.form.value.text,
+      title: this.form.value.title,
     }).subscribe(() => {
       this.submitted = false;
       this.alertService.success('Post has been updated');
