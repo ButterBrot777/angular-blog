@@ -1,0 +1,71 @@
+<form
+  [formGroup]="form"
+  (ngSubmit)="submit()"
+  class="card">
+  <h2>Войти в панель администратора</h2>
+
+  <div class="alert alert-danger"
+    *ngIf="auth.error$ | async as error"
+  >{{error}}</div>
+
+  <div class="alert alert-danger"
+       *ngIf="message"
+  >{{message}}</div>
+
+  <div
+    [ngClass]="{invalid: form.get('email').touched && form.get('email').invalid}"
+    class="form-control">
+    <label for="email">Email</label>
+    <input
+      id="email"
+      type="email"
+      formControlName="email">
+  </div>
+  <div
+    *ngIf="form.get('email').touched && form.get('email').invalid"
+    class="validation">
+    <small
+      *ngIf="form.get('email').errors.required">
+      Email is required
+    </small>
+    <small
+      *ngIf="form.get('email').errors.email">
+      Put email in format email@email.com
+    </small>
+  </div>
+
+  <div
+    [ngClass]="{invalid: form.get('password').touched && form.get('password').invalid}"
+    class="form-control">
+    <label for="password">Password</label>
+    <input
+      id="password"
+      type="password"
+      formControlName="password">
+  </div>
+
+  <div
+    *ngIf="form.get('password').touched && form.get('password').invalid"
+    class="validation">
+    <small
+      *ngIf="form.get('password').errors.required"
+    >
+      Password is required
+    </small>
+    <small
+      *ngIf="form.get('password').errors.minlength"
+    >
+      Password length must be
+      {{form.get('password').errors.minlength.requiredLength}} or more symbols.
+      Now it is
+      {{form.get('password').errors.minlength.actualLength}}
+    </small>
+  </div>
+
+  <button
+    type="submit"
+    class="btn btn-primary"
+    [disabled]="form.invalid || submitted"
+  >Log In</button>
+</form>
+
