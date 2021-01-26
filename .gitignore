@@ -5,6 +5,7 @@
 /tmp
 /out-tsc
 /.firebase
+.firebase
 /.github
 firebase-debug.log
 # Only exists if Bazel was run
